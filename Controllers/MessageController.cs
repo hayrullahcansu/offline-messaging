@@ -52,5 +52,16 @@ namespace OfflineMessaging.Controllers
 
             return _messageService.SendMessage(userId, targetUser.Id, input.Text).GetAwaiter().GetResult();
         }
+
+        // GET api/v1/message/{targetUserId}/{fromIndex}/{limit}
+        [JwtAuthorize]
+        [HttpGet("{targetUserId}/{fromIndex}/{limit}")]
+        public GetMessageServiceResult Get(string targetUserId, int fromIndex = 0, int limit = 20)
+        {
+            var targetUser = _userManager.FindByIdAsync(targetUserId).GetAwaiter().GetResult();
+            if (targetUser == null) throw new NotFoundException("User Not Found");
+            var userId = User.GetUserId();
+            return _messageService.GetMessage(userId, targetUser.Id, fromIndex, limit).GetAwaiter().GetResult();
+        }
     }
 }

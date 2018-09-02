@@ -40,7 +40,7 @@ namespace OfflineMessaging.Controllers
         }
 
 
-        // POST api/v1/account/{userName}
+        // GET api/v1/account/{userName}
         [HttpGet("{userName}")]
         public UserDto Get(string userName)
         {
@@ -49,7 +49,7 @@ namespace OfflineMessaging.Controllers
             return dto;
         }
 
-        // POST api/v1/account/{id}/history
+        // GET api/v1/account/{id}/history
         [JwtAuthorize]
         [HttpGet("{userName}/history")]
         public List<UserActivity> GetHistory(string userName)
