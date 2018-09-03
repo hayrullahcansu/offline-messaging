@@ -23,14 +23,14 @@ namespace OfflineMessaging
                     UserName = "admin",
                     Email = "admin@admin.com"
                 };
-                var result = await userManager.CreateAsync(user, "AdminPassword123.@");
+                await userManager.CreateAsync(user, "AdminPassword123.@");
 
                 user = new User
                 {
                     UserName = "test",
                     Email = "test@admin.com"
                 };
-               result= await userManager.CreateAsync(user, "TestPassword123.@");
+                await userManager.CreateAsync(user, "TestPassword123.@");
                 
             }
         }
