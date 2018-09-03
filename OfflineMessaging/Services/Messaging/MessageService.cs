@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OfflineMessaging.Entities;
 using OfflineMessaging.Services.Account;
+using OfflineMessaging.Services.Logging;
 
 namespace OfflineMessaging.Services.Messaging
 {
@@ -21,12 +22,15 @@ namespace OfflineMessaging.Services.Messaging
     public class MessageService : IMessageService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ILoggerService _loggerService;
 
         public MessageService(
-            ApplicationDbContext dbContext
+            ApplicationDbContext dbContext,
+            ILoggerService loggerService
         )
         {
             _dbContext = dbContext;
+            _loggerService = loggerService;
         }
 
 
@@ -52,7 +56,7 @@ namespace OfflineMessaging.Services.Messaging
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await _loggerService.AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;
@@ -80,7 +84,7 @@ namespace OfflineMessaging.Services.Messaging
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await _loggerService.AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;

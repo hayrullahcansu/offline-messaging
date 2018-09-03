@@ -2,9 +2,10 @@
 {
     public class Constants
     {
-        public const string JwtKey = "_guclu_bi_sifre_yaz_daha_sonra_buraya_";
-        public const string JwtIssuer = "offlinemessaging";
-        public const int JwtExpireDays = 30;
+        public static readonly string JwtKey = AppConfig.Instance.AppSettings.JwtKey;
+        public static readonly string JwtIssuer = AppConfig.Instance.AppSettings.JwtIssuer;
+        public static readonly int JwtExpireDays = AppConfig.Instance.AppSettings.JwtExpireDays;
+        public static readonly string ConnectionString = AppConfig.Instance.AppSettings.ConnectionString;
     }
 
     public class EventConstants

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OfflineMessaging.Entities;
+using OfflineMessaging.Services.Logging;
+using OfflineMessaging.Utils;
 
 namespace OfflineMessaging.Services.UserManagement
 {
@@ -25,12 +27,15 @@ namespace OfflineMessaging.Services.UserManagement
     public class UserManagementService : IUserManagementService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ILoggerService _loggerService;
 
         public UserManagementService(
-            ApplicationDbContext dbContext
+            ApplicationDbContext dbContext,
+            ILoggerService loggerService
         )
         {
             _dbContext = dbContext;
+            _loggerService = loggerService;
         }
 
         public async Task<BlockUserServiceResult> BlockUser(string sourceUserId, string targetUserId)
@@ -48,11 +53,12 @@ namespace OfflineMessaging.Services.UserManagement
                 _dbContext.UserBlocks.Add(userBlock);
                 await _dbContext.SaveChangesAsync();
                 result.UserBlock = userBlock;
+                await _loggerService.AddUserActivity(sourceUserId, EventConstants.BlockUser, $"User blocked user {targetUserId}");
             }
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await _loggerService.AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;
@@ -77,11 +83,12 @@ namespace OfflineMessaging.Services.UserManagement
                 _dbContext.UserBlocks.Remove(userBlock);
                 await _dbContext.SaveChangesAsync();
                 result.UnblockedUser = userBlock;
+                await _loggerService.AddUserActivity(sourceUserId, EventConstants.UnblockUser, $"User unblocked user {targetUserId}");
             }
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await _loggerService.AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;
@@ -100,7 +107,7 @@ namespace OfflineMessaging.Services.UserManagement
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await _loggerService.AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;

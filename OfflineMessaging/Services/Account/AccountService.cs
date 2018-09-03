@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using OfflineMessaging.Dtos;
 using OfflineMessaging.Entities;
 using OfflineMessaging.Exceptions;
+using OfflineMessaging.Services.Logging;
 using OfflineMessaging.Utils;
 
 
@@ -34,15 +35,18 @@ namespace OfflineMessaging.Services.Account
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _dbContext;
+        private readonly ILoggerService _loggerService;
 
         public AccountService(UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ApplicationDbContext dbContext
+            ApplicationDbContext dbContext,
+            ILoggerService loggerService
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
+            _loggerService = loggerService;
         }
 
         public async Task<LoginServiceResult> Login(LoginInput input, string ip)
@@ -67,7 +71,7 @@ namespace OfflineMessaging.Services.Account
                 serviceResult.SetFailed(1001);
             }
 
-            //TODO: await _logService.Log(EventConstants.Login, null, user.Id, ip, LogEntry.Level.Info);
+            await _loggerService.AddUserActivity(user.Id, EventConstants.Login, $"User logined at {ip}");
 
             return serviceResult;
         }
@@ -90,13 +94,12 @@ namespace OfflineMessaging.Services.Account
             {
                 await _dbContext.SaveChangesAsync();
                 await _signInManager.SignInAsync(user, isPersistent: true);
-                //TODO: await _logService.Log(EventConstants.Register, null, user.Id, ip, LogEntry.Level.Info);
+                await _loggerService.AddUserActivity(user.Id, EventConstants.Register, $"User registered at {ip}");
                 serviceResult.Token = await GenerateJwtToken(user);
 
                 return serviceResult;
             }
 
-            //TODO: localization
             foreach (var error in result.Errors)
             {
                 serviceResult.AddError(error.Code, error.Description);

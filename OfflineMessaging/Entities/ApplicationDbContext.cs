@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OfflineMessaging.Utils;
 
 
 namespace OfflineMessaging.Entities
@@ -24,11 +25,7 @@ namespace OfflineMessaging.Entities
 
         private static string GetConnectionString()
         {
-            return "Server=localhost;" +
-                   "database=offlinemessaging;" +
-                   "uid=root;" +
-                   "pwd=1;" +
-                   "pooling=true;";
+            return Constants.ConnectionString;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

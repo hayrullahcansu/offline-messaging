@@ -10,22 +10,14 @@ namespace OfflineMessaging.Tests
 {
     public class UnitTest1
     {
-        private readonly IMessageService _messageService;
-
         public UnitTest1()
         {
-            //IAccountService accountService, UserManager<User> userManager
-            //  AccountService service = new AccountService();
-
-            
         }
 
         [Fact]
         public void Test1()
         {
-            
-            
-            Assert.True(true,"Passed");
+            Assert.True(true, "Passed");
         }
     }
 }

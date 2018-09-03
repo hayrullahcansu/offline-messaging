@@ -26,6 +26,11 @@ namespace OfflineMessaging.Services.Logging
         public async Task<ServiceResult> AddUserActivity(string userId, string operation, string text)
         {
             var result = new ServiceResult();
+            var user = _dbContext.Users.FirstOrDefaultAsync(r => r.Id == userId)
+                .GetAwaiter()
+                .GetResult();
+            if (user == null)
+                return result.AddError(String.Empty, "User Not Found");
 
             try
             {
@@ -41,7 +46,7 @@ namespace OfflineMessaging.Services.Logging
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;
@@ -72,7 +77,6 @@ namespace OfflineMessaging.Services.Logging
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
             }
 
             return result;
@@ -92,7 +96,7 @@ namespace OfflineMessaging.Services.Logging
             catch (Exception ex)
             {
                 result.AddError(ex.GetBaseException().ToString(), ex.ToString());
-                //TODO: Log
+                await AddLogEntry(ex.GetBaseException().ToString(), ex.ToString());
             }
 
             return result;

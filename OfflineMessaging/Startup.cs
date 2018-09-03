@@ -20,6 +20,7 @@ using OfflineMessaging.Services.Logging;
 using OfflineMessaging.Services.Messaging;
 using OfflineMessaging.Services.UserManagement;
 using OfflineMessaging.Utils;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace OfflineMessaging
 {
@@ -69,6 +70,11 @@ namespace OfflineMessaging
 
 
             services.AddMvc();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Offline Message Web API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,6 +97,7 @@ namespace OfflineMessaging
             });
 
             app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
             dbContext.Database.EnsureCreated();
@@ -105,6 +112,12 @@ namespace OfflineMessaging
                     controller = "Home",
                     action = "Index"
                 });
+            });
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Offline Message Web API");
             });
         }
     }
