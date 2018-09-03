@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OfflineMessaging.Dtos;
 using OfflineMessaging.Entities;
+using OfflineMessaging.Exceptions;
 using OfflineMessaging.Utils;
 
 
@@ -116,6 +117,7 @@ namespace OfflineMessaging.Services.Account
                 return null;
             return new UserDto()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
                 DateOfBirth = user.DateOfBirth,
@@ -130,11 +132,13 @@ namespace OfflineMessaging.Services.Account
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public async Task<List<UserActivity>> ListHistory(string userId)
+        public async Task<List<UserActivity>> ListHistory(string userName)
         {
+            var user = GetUserByUsername(userName).GetAwaiter().GetResult();
+            if (user == null) throw new NotFoundException("User Not Found");
             return await _dbContext
                 .UserActivities
-                .Where(r => r.UserId == userId)
+                .Where(r => r.UserId == user.Id)
                 .OrderByDescending(r => r.Id)
                 .Take(20)
                 .ToListAsync();

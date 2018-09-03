@@ -14,6 +14,6 @@ namespace OfflineMessaging.Services.Account
         Task<User> GetUserById(string userId);
         Task<UserDto> GetUserByUsername(string userName);
         Task<User> GetUserByEmail(string email);
-        Task<List<UserActivity>> ListHistory(string userId);
+        Task<List<UserActivity>> ListHistory(string userName);
     }
 }

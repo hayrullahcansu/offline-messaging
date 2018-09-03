@@ -58,38 +58,38 @@ namespace OfflineMessaging.Controllers
             return _messageService.SendMessage(userId, targetUser.Id, input.Text).GetAwaiter().GetResult();
         }
 
-        // GET api/v1/message/{targetUserId}/{fromIndex}/{limit}
+        // GET api/v1/message/{userName}/{fromIndex}/{limit}
         [JwtAuthorize]
-        [HttpGet("{targetUserId}/{fromIndex}/{limit}")]
-        public GetMessageServiceResult Get(string targetUserId, int fromIndex = 0, int limit = 20)
+        [HttpGet("{userName}/{fromIndex}/{limit}")]
+        public GetMessageServiceResult Get(string userName, int fromIndex = 0, int limit = 20)
         {
-            var targetUser = _userManager.FindByIdAsync(targetUserId).GetAwaiter().GetResult();
+            var targetUser = _accountService.GetUserByUsername(userName).GetAwaiter().GetResult();
             if (targetUser == null) throw new NotFoundException("User Not Found");
             var userId = User.GetUserId();
             return _messageService.GetMessage(userId, targetUser.Id, fromIndex, limit).GetAwaiter().GetResult();
         }
 
 
-        // PATCH api/v1/message/{targetUserId}/block
+        // PATCH api/v1/message/{userName}/block
         [JwtAuthorize]
-        [HttpPatch("{targetUserId}/block")]
-        public BlockUserServiceResult Block(string targetUserId)
+        [HttpPatch("{userName}/block")]
+        public BlockUserServiceResult Block(string userName)
         {
-            var targetUser = _userManager.FindByIdAsync(targetUserId).GetAwaiter().GetResult();
+            var targetUser = _accountService.GetUserByUsername(userName).GetAwaiter().GetResult();
             if (targetUser == null) throw new NotFoundException("User Not Found");
             var userId = User.GetUserId();
-            return _userManagement.BlockUser(userId, targetUserId).GetAwaiter().GetResult();
+            return _userManagement.BlockUser(userId, targetUser.Id).GetAwaiter().GetResult();
         }
 
-        // PATCH api/v1/message/{targetUserId}/unlock
+        // PATCH api/v1/message/{userName}/unlock
         [JwtAuthorize]
-        [HttpPatch("{targetUserId}/unblock")]
-        public UnblockUserServiceResult Unblock(string targetUserId)
+        [HttpPatch("{userName}/unblock")]
+        public UnblockUserServiceResult Unblock(string userName)
         {
-            var targetUser = _userManager.FindByIdAsync(targetUserId).GetAwaiter().GetResult();
+            var targetUser = _accountService.GetUserByUsername(userName).GetAwaiter().GetResult();
             if (targetUser == null) throw new NotFoundException("User Not Found");
             var userId = User.GetUserId();
-            return _userManagement.UnblockUser(userId, targetUserId).GetAwaiter().GetResult();
+            return _userManagement.UnblockUser(userId, targetUser.Id).GetAwaiter().GetResult();
         }
     }
 }

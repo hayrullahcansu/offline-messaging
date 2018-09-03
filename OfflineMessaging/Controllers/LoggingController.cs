@@ -25,7 +25,7 @@ namespace OfflineMessaging.Controllers
         }
 
         // GET api/v1/logging/{fromIndex}{limit}
-        [HttpGet("{fromIndex}{limit}")]
+        [HttpGet("{fromIndex}/{limit}")]
         public GetLogEntriesServiceResult Get(int fromIndex, int limit)
         {
             return _loggerService.GetLogEntries(fromIndex, limit).GetAwaiter().GetResult();

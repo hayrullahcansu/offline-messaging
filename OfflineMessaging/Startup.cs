@@ -75,7 +75,8 @@ namespace OfflineMessaging
         public void Configure(
             IApplicationBuilder app,
             IHostingEnvironment env,
-            ApplicationDbContext dbContext
+            ApplicationDbContext dbContext,
+            UserManager<User> userManager
         )
         {
             if (env.IsDevelopment())
@@ -94,6 +95,8 @@ namespace OfflineMessaging
 
             dbContext.Database.EnsureCreated();
 
+            StartupDbInitializer.SeedData(dbContext, userManager).Wait();
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");

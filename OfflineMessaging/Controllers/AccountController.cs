@@ -44,12 +44,14 @@ namespace OfflineMessaging.Controllers
         [HttpGet("{userName}")]
         public UserDto Get(string userName)
         {
-            var dto = _accountService.GetUserByUsername(userName).GetAwaiter().GetResult();
+            var dto = _accountService.GetUserByUsername(userName)
+                .GetAwaiter()
+                .GetResult();
             if (dto == null) throw new NotFoundException("User Not Found");
             return dto;
         }
 
-        // GET api/v1/account/{id}/history
+        // GET api/v1/account/{userName}/history
         [JwtAuthorize]
         [HttpGet("{userName}/history")]
         public List<UserActivity> GetHistory(string userName)
