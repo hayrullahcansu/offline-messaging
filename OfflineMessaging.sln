@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfflineMessaging", "OfflineMessaging.csproj", "{73EABE5F-5790-4669-86DD-44C8DFC23D76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfflineMessaging", "OfflineMessaging\OfflineMessaging.csproj", "{73EABE5F-5790-4669-86DD-44C8DFC23D76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
