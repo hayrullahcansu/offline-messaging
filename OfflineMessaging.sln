@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfflineMessaging", "OfflineMessaging\OfflineMessaging.csproj", "{73EABE5F-5790-4669-86DD-44C8DFC23D76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfflineMessaging.Tests", "OfflineMessaging.Tests\OfflineMessaging.Tests.csproj", "{31B9FDB2-048F-41D5-8A10-B515D8D60468}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{73EABE5F-5790-4669-86DD-44C8DFC23D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73EABE5F-5790-4669-86DD-44C8DFC23D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73EABE5F-5790-4669-86DD-44C8DFC23D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31B9FDB2-048F-41D5-8A10-B515D8D60468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31B9FDB2-048F-41D5-8A10-B515D8D60468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31B9FDB2-048F-41D5-8A10-B515D8D60468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31B9FDB2-048F-41D5-8A10-B515D8D60468}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
